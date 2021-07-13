@@ -2,6 +2,7 @@ export interface Subject {
   id: string;
   name: string;
   group: string;
+  weekday: number;
   start: number;
   end: number;
   room: string;
@@ -30,7 +31,7 @@ export function parse(raw: string): Subject[] {
       // if parseInt unsuccessful
       if (!weekday || !start || !end || !weeks) return null;
 
-      return { id, name, group, start, end, room, weeks };
+      return { id, name, group, weekday, start, end, room, weeks };
     })
     .filter((e): e is Subject => Boolean(e));
 }

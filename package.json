@@ -15,6 +15,7 @@
 		"@typescript-eslint/eslint-plugin": "^4.19.0",
 		"@typescript-eslint/parser": "^4.19.0",
 		"autoprefixer": "^10.2.6",
+		"carbon-icons-svelte": "^10.35.0",
 		"cssnano": "^5.0.6",
 		"eslint": "^7.22.0",
 		"eslint-config-prettier": "^8.1.0",
