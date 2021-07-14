@@ -3,15 +3,16 @@
 </script>
 
 <script lang="ts">
-  import type { Subject } from '$lib/Subject';
   import { getWeek } from '$lib/date';
+  import { goto } from '$app/navigation';
+
   import Location16 from 'carbon-icons-svelte/lib/Location16';
   import Time16 from 'carbon-icons-svelte/lib/Time16';
   import Menu32 from 'carbon-icons-svelte/lib/Menu32';
   import Calendar32 from 'carbon-icons-svelte/lib/Calendar32';
 
   const agenda: Subject[] = JSON.parse(localStorage.getItem('agenda-data') || '[]');
-  let currentWeek = getWeek();
+  let currentWeek = getWeek(new Date());
   let today = new Date();
 
   let thisWeekAgenda: Subject[] = [];
@@ -29,7 +30,9 @@
 <div class="sticky top-0 bg-white p-8 space-y-8">
   <div class="flex w-full justify-between">
     <Menu32 />
-    <Calendar32 />
+    <button on:click={() => goto('/agenda/week-picker')}>
+      <Calendar32 />
+    </button>
   </div>
   <h1 class="text-4xl font-semibold">
     <span class="text-gray-300 font-thin">Tuần</span>

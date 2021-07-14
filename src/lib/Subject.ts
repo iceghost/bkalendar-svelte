@@ -1,14 +1,3 @@
-export interface Subject {
-  id: string;
-  name: string;
-  group: string;
-  weekday: number;
-  start: number;
-  end: number;
-  room: string;
-  weeks: number[];
-}
-
 export function parse(raw: string): Subject[] {
   return raw
     .split('\n')
