@@ -3,22 +3,19 @@
 </script>
 
 <script lang="ts">
-  import { parse } from '$lib/Subject';
+  import { timetable } from '$lib/stores/timetable';
   let raw: string = '';
-
-  let parseResult = JSON.parse(localStorage.getItem('agenda-data') || '[]');
-  $: localStorage.setItem('agenda-data', JSON.stringify(parseResult));
+  let status: boolean;
 </script>
 
 <form class="w-full max-w-xl m-auto" on:submit|preventDefault>
   <textarea class="w-full" bind:value={raw} />
-  <button
-    class="border px-3 py-1"
-    on:click={() => {
-      parseResult = parse(raw);
-    }}
-  >
-    Đọc
-  </button>
-  <p>Đã đọc được {parseResult.length} môn</p>
+  <button class="border px-3 py-1" on:click={() => (status = timetable.feed(raw))}> Đọc </button>
+  {#if status !== undefined}
+    {#if !status}
+      <span class="text-red-500">Xem lại input...</span>
+    {:else}
+      <p>Đã đọc được {$timetable?.subjects.length} môn</p>
+    {/if}
+  {/if}
 </form>

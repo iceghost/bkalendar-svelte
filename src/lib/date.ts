@@ -12,3 +12,8 @@ export function getWeek(date: Date) {
     )
   );
 };
+
+export function getDateFromWeek(weekday: number, week: number, year: number): Date {
+  const week1 = new Date(year, 0, 4);
+  return new Date(week1.getTime() + (week - 1) * 7 * 864E5 + (weekday - (week1.getDay() + 6) % 7) * 864E5)
+}

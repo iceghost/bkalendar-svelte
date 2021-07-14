@@ -10,3 +10,8 @@ interface Subject {
   room: string;
   weeks: number[];
 }
+
+interface Timetable {
+  firstDate: Date;
+  subjects: Subject[];
+}
