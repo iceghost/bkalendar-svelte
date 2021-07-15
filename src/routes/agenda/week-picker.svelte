@@ -1,9 +1,17 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { flip } from 'svelte/animate';
+  import { getWeek } from '$lib/date';
   import { fade, fly } from 'svelte/transition';
+  import { flip } from 'svelte/animate';
   import ChevronLeft32 from 'carbon-icons-svelte/lib/ChevronLeft32';
-  let curW = 32;
+  let month = 6;
+
+  let year = 2021;
+  let firstDay: Date;
+  $: {
+    firstDay = new Date(year, month, 1);
+    firstDay.setDate(firstDay.getDate() - ((firstDay.getDay() + 6) % 7));
+  }
 </script>
 
 <div class="sticky top-0 bg-white p-8 space-y-8">
@@ -18,8 +26,12 @@
   </h1>
 </div>
 
-<div class="grid grid-cols-9 px-8">
-  <span class="col-span-2">Tuần</span>
+<p>{firstDay}</p>
+<span>Tháng {month + 1}</span>
+<button on:click={() => month++}>Thêm</button>
+<button on:click={() => month--}>Giảm</button>
+<div class="grid grid-cols-8 px-4">
+  <span>Tuần</span>
   <span>Mo</span>
   <span>Tu</span>
   <span>We</span>
@@ -28,30 +40,13 @@
   <span>Sa</span>
   <span>Su</span>
 </div>
-<div
-  on:wheel={(e) => {
-    e.deltaY < 0 ? curW-- : curW++;
-  }}
-  class="px-8"
->
-  {#each [curW - 2, curW - 1, curW, curW + 1, curW + 2] as week (week)}
-    <div
-      class="grid grid-cols-9"
-      class:bg-gray-50={week === curW}
-      animate:flip={{ duration: 300 }}
-      in:fade|local={{ duration: 300 }}
-      out:fade|local={{ duration: 300 }}
-      on:click={() => (curW = week)}
-    >
-      <span class="col-span-2">{week}</span>
-      <span>1</span>
-      <span>2</span>
-      <span>3</span>
-      <span>4</span>
-      <span>5</span>
-      <span>6</span>
-      <span>7</span>
-    </div>
+<div class="grid grid-cols-8 px-4 gap-2">
+  {#each [0, 1, 2, 3, 4].map((offset) => new Date(firstDay.getTime() + offset * 864e5 * 7)) as date}
+    <span out:fade in:fly>{getWeek(date)}</span>
+    {#each [0, 1, 2, 3, 4, 5, 6].map((offset2) => new Date(date.getTime() + offset2 * 864e5)) as weekday}
+      <span out:fade in:fly
+        class:text-gray-300={weekday.getMonth() !== month}
+      >{weekday.getDay()}</span>
+    {/each}
   {/each}
 </div>
-<button on:click={() => curW++}>Add</button>

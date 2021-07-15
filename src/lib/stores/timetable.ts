@@ -1,9 +1,7 @@
-import { writable } from 'svelte/store'
-
+import { writable } from 'svelte/store';
 import { getDateFromWeek } from '$lib/date';
 
 function parse(raw: string): Timetable | null {
-
   // first line: Học kỳ 2 Năm học 2020 - 2021
   const [, , rawSemester, , , rawYearFrom] = raw.split('\n')[0].split(' ');
   const semester = parseInt(rawSemester);
@@ -46,22 +44,21 @@ function parse(raw: string): Timetable | null {
 
   return {
     firstDate: getDateFromWeek(0, weekFrom, semester === 1 ? yearFrom : yearFrom + 1),
-    subjects
-  }
+    subjects,
+  };
 }
 
 function createTimetable() {
-  const { subscribe, set } = writable<Timetable>(undefined, set => {
-    const serialized = localStorage.getItem('agenda-data');
-    if (serialized)
-      set(JSON.parse(serialized))
-  })
+  const { subscribe, set } = writable<Timetable>(undefined, (set) => {
+    const serialized = localStorage.getItem('timetable-data');
+    if (serialized) set(JSON.parse(serialized));
+  });
 
   function feed(raw: string, set: (value: Timetable) => void): boolean {
     const result = parse(raw);
     if (result) {
       set(result);
-      localStorage.setItem('agenda-data', JSON.stringify(result));
+      localStorage.setItem('timetable-data', JSON.stringify(result));
       return true;
     }
     return false;
@@ -70,7 +67,7 @@ function createTimetable() {
   return {
     subscribe,
     feed: (raw: string) => feed(raw, set),
-  }
+  };
 }
 
 export const timetable = createTimetable();

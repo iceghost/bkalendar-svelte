@@ -3,31 +3,31 @@
 </script>
 
 <script lang="ts">
-  import { getWeek, getDateFromWeek } from '$lib/date';
+  import { getWeek } from '$lib/date';
   import { goto } from '$app/navigation';
+  import { timetable } from '$lib/stores/timetable';
 
   import Location16 from 'carbon-icons-svelte/lib/Location16';
   import Time16 from 'carbon-icons-svelte/lib/Time16';
   import Menu32 from 'carbon-icons-svelte/lib/Menu32';
   import Calendar32 from 'carbon-icons-svelte/lib/Calendar32';
 
-  const agenda: Timetable = JSON.parse(localStorage.getItem('agenda-data') || '[]');
   let currentWeek = getWeek(new Date());
   let today = new Date();
 
   let thisWeekAgenda: Subject[] = [];
 
   // Get week limits
-  let weeks = agenda.subjects.map((subject) => subject.weeks).flat();
+  let weeks = $timetable.subjects.map((subject) => subject.weeks).flat();
   let [minWeek, maxWeek] = [Math.min(...weeks), Math.max(...weeks)];
   $: {
     if (currentWeek < minWeek) currentWeek = minWeek;
     else if (currentWeek > maxWeek) currentWeek = maxWeek;
-    thisWeekAgenda = agenda.subjects.filter((subject) => subject.weeks.indexOf(currentWeek) >= 0);
+    thisWeekAgenda = $timetable.subjects.filter(
+      (subject) => subject.weeks.indexOf(currentWeek) >= 0,
+    );
   }
 </script>
-
-{getDateFromWeek(0, 8, 2021)}
 
 <div class="sticky top-0 bg-white p-8 space-y-8">
   <div class="flex w-full justify-between">
