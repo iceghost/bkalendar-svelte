@@ -1,16 +1,13 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { getWeek } from '$lib/date';
-  import { fade, fly } from 'svelte/transition';
-  import { flip } from 'svelte/animate';
   import ChevronLeft32 from 'carbon-icons-svelte/lib/ChevronLeft32';
-  let month = 6;
-
+  import { Temporal } from '@js-temporal/polyfill';
+  let month = 7;
   let year = 2021;
-  let firstDay: Date;
+  let firstDay: Temporal.PlainDate;
   $: {
-    firstDay = new Date(year, month, 1);
-    firstDay.setDate(firstDay.getDate() - ((firstDay.getDay() + 6) % 7));
+    firstDay = Temporal.PlainDate.from({ year, month, day: 1 });
+    firstDay = firstDay.subtract({ days: firstDay.dayOfWeek - 1 });
   }
 </script>
 
@@ -26,8 +23,7 @@
   </h1>
 </div>
 
-<p>{firstDay}</p>
-<span>Tháng {month + 1}</span>
+<span>Tháng {month}</span>
 <button on:click={() => month++}>Thêm</button>
 <button on:click={() => month--}>Giảm</button>
 <div class="grid grid-cols-8 px-4">
@@ -41,12 +37,10 @@
   <span>Su</span>
 </div>
 <div class="grid grid-cols-8 px-4 gap-2">
-  {#each [0, 1, 2, 3, 4].map((offset) => new Date(firstDay.getTime() + offset * 864e5 * 7)) as date}
-    <span out:fade in:fly>{getWeek(date)}</span>
-    {#each [0, 1, 2, 3, 4, 5, 6].map((offset2) => new Date(date.getTime() + offset2 * 864e5)) as weekday}
-      <span out:fade in:fly
-        class:text-gray-300={weekday.getMonth() !== month}
-      >{weekday.getDay()}</span>
+  {#each [0, 1, 2, 3, 4].map((offset) => firstDay.add({ weeks: offset })) as date}
+    <span>{date.weekOfYear}</span>
+    {#each [0, 1, 2, 3, 4, 5, 6].map((offset) => date.add({ days: offset })) as weekday}
+      <span class:text-gray-300={weekday.month !== month}>{weekday.day}</span>
     {/each}
   {/each}
 </div>

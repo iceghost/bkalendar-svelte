@@ -3,17 +3,17 @@
 </script>
 
 <script lang="ts">
-  import { getWeek } from '$lib/date';
   import { goto } from '$app/navigation';
   import { timetable } from '$lib/stores/timetable';
+  import { Temporal } from '@js-temporal/polyfill';
 
   import Location16 from 'carbon-icons-svelte/lib/Location16';
   import Time16 from 'carbon-icons-svelte/lib/Time16';
   import Menu32 from 'carbon-icons-svelte/lib/Menu32';
   import Calendar32 from 'carbon-icons-svelte/lib/Calendar32';
 
-  let currentWeek = getWeek(new Date());
-  let today = new Date();
+  let today = Temporal.now.plainDateISO();
+  let currentWeek = today.weekOfYear;
 
   let thisWeekAgenda: Subject[] = [];
 
@@ -42,15 +42,15 @@
   </h1>
 </div>
 {#each ['M', 'T', 'W', 'T', 'F', 'S', 'S'] as weekday, i}
-  <div class="flex p-8 space-x-8" class:bg-gray-100={i - today.getDay() + 1 === 0}>
+  <div class="flex p-8 space-x-8" class:bg-gray-100={today.daysInWeek === i + 1}>
     <div class="text-center w-12 flex-shrink-0">
       <h2 class="text-4xl font-bold">{weekday}</h2>
       <p class="text-gray-400">
         <span class="text-gray-800">
-          {new Date(today.getTime() + (i - today.getDay() + 1) * 864e5).getDate()}
+          {today.subtract({days: today.dayOfWeek - 1}).add({days: i}).day}
         </span>
         .
-        {new Date(today.getTime() + (i - today.getDay() + 1) * 864e5).getMonth() + 1}
+        {today.subtract({days: today.dayOfWeek - 1}).add({days: i}).month}
       </p>
     </div>
     <div class="space-y-8">

@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { getDateFromWeek } from '$lib/date';
+import { Temporal } from '@js-temporal/polyfill'
 
 function parse(raw: string): Timetable | null {
   // first line: Học kỳ 2 Năm học 2020 - 2021
@@ -42,8 +42,15 @@ function parse(raw: string): Timetable | null {
 
   console.log(weekFrom);
 
+  let firstDate = Temporal.PlainDate.from({
+    year: semester === 1 ? yearFrom : yearFrom + 1,
+    month: 1,
+    day: 4,
+  })
+  firstDate = firstDate.subtract({ days: firstDate.dayOfWeek - 1 }).add({ weeks: weekFrom - 1 })
+
   return {
-    firstDate: getDateFromWeek(0, weekFrom, semester === 1 ? yearFrom : yearFrom + 1),
+    firstDate,
     subjects,
   };
 }

@@ -33,6 +33,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@js-temporal/polyfill": "^0.1.0",
 		"@tailwindcss/forms": "^0.3.3",
 		"firebase": "9.0.0-beta.6"
 	}

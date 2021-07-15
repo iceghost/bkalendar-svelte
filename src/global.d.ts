@@ -1,4 +1,5 @@
 /// <reference types="@sveltejs/kit" />
+/// <reference types="@js-temporal/polyfill" />
 
 interface Subject {
   id: string;
@@ -12,6 +13,6 @@ interface Subject {
 }
 
 interface Timetable {
-  firstDate: Date;
+  firstDate: import("@js-temporal/polyfill").Temporal.PlainDate;
   subjects: Subject[];
 }
