@@ -5,6 +5,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import { timetable } from '$lib/stores/timetable';
+  import { weekSelected } from '$lib/stores/date';
   import { Temporal } from '@js-temporal/polyfill';
 
   import Location16 from 'carbon-icons-svelte/lib/Location16';
@@ -12,21 +13,9 @@
   import Menu32 from 'carbon-icons-svelte/lib/Menu32';
   import Calendar32 from 'carbon-icons-svelte/lib/Calendar32';
 
-  let today = Temporal.now.plainDateISO();
-  let currentWeek = today.weekOfYear;
-
-  let thisWeekAgenda: Subject[] = [];
-
-  // Get week limits
-  let weeks = $timetable.subjects.map((subject) => subject.weeks).flat();
-  let [minWeek, maxWeek] = [Math.min(...weeks), Math.max(...weeks)];
-  $: {
-    if (currentWeek < minWeek) currentWeek = minWeek;
-    else if (currentWeek > maxWeek) currentWeek = maxWeek;
-    thisWeekAgenda = $timetable.subjects.filter(
-      (subject) => subject.weeks.indexOf(currentWeek) >= 0,
-    );
-  }
+  let thisWeekAgenda = $timetable.subjects.filter(
+    (subject) => subject.weeks.indexOf($weekSelected.weekOfYear) >= 0,
+  );
 </script>
 
 <div class="sticky top-0 bg-white p-8 space-y-8">
@@ -42,15 +31,15 @@
   </h1>
 </div>
 {#each ['M', 'T', 'W', 'T', 'F', 'S', 'S'] as weekday, i}
-  <div class="flex p-8 space-x-8" class:bg-gray-100={today.daysInWeek === i + 1}>
+  <div class="flex p-8 space-x-8" class:bg-gray-100={$weekSelected.dayOfWeek === i + 1}>
     <div class="text-center w-12 flex-shrink-0">
       <h2 class="text-4xl font-bold">{weekday}</h2>
       <p class="text-gray-400">
         <span class="text-gray-800">
-          {today.subtract({ days: today.dayOfWeek - 1 }).add({ days: i }).day}
+          {$weekSelected.add({ days: i }).day}
         </span>
         .
-        {today.subtract({ days: today.dayOfWeek - 1 }).add({ days: i }).month}
+        {$weekSelected.add({ days: i }).month}
       </p>
     </div>
     <div class="space-y-8">

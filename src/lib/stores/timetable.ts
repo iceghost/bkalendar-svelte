@@ -27,7 +27,7 @@ function parse(raw: string): Timetable | null {
           if (!weekFrom) {
             weekFrom = parseInt(raw) - i;
           }
-          return parseInt(raw) - weekFrom;
+          return parseInt(raw);
         })
         .filter(Boolean);
 
@@ -58,7 +58,15 @@ function parse(raw: string): Timetable | null {
 function createTimetable() {
   const { subscribe, set } = writable<Timetable>(undefined, (set) => {
     const serialized = localStorage.getItem('timetable-data');
-    if (serialized) set(JSON.parse(serialized));
+    if (serialized)
+      set(
+        JSON.parse(serialized, (key, value) => {
+          if (key === 'firstDate') {
+            return Temporal.PlainDate.from(value);
+          }
+          return value;
+        }),
+      );
   });
 
   function feed(raw: string, set: (value: Timetable) => void): boolean {
