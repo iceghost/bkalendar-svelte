@@ -47,10 +47,10 @@
       <h2 class="text-4xl font-bold">{weekday}</h2>
       <p class="text-gray-400">
         <span class="text-gray-800">
-          {today.subtract({days: today.dayOfWeek - 1}).add({days: i}).day}
+          {today.subtract({ days: today.dayOfWeek - 1 }).add({ days: i }).day}
         </span>
         .
-        {today.subtract({days: today.dayOfWeek - 1}).add({days: i}).month}
+        {today.subtract({ days: today.dayOfWeek - 1 }).add({ days: i }).month}
       </p>
     </div>
     <div class="space-y-8">

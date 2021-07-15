@@ -4,7 +4,7 @@
 
 <script lang="ts">
   import { timetable } from '$lib/stores/timetable';
-  let raw: string = '';
+  let raw = '';
   let status: boolean;
 </script>
 

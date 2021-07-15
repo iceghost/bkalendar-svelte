@@ -1,7 +1,7 @@
 /// <reference types="@sveltejs/kit" />
 /// <reference types="@js-temporal/polyfill" />
 
-interface Subject {
+declare interface Subject {
   id: string;
   name: string;
   group: string;
@@ -12,7 +12,7 @@ interface Subject {
   weeks: number[];
 }
 
-interface Timetable {
-  firstDate: import("@js-temporal/polyfill").Temporal.PlainDate;
+declare interface Timetable {
+  firstDate: import('@js-temporal/polyfill').Temporal.PlainDate;
   subjects: Subject[];
 }

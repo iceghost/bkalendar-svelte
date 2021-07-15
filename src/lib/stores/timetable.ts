@@ -1,12 +1,12 @@
 import { writable } from 'svelte/store';
-import { Temporal } from '@js-temporal/polyfill'
+import { Temporal } from '@js-temporal/polyfill';
 
 function parse(raw: string): Timetable | null {
   // first line: Học kỳ 2 Năm học 2020 - 2021
   const [, , rawSemester, , , rawYearFrom] = raw.split('\n')[0].split(' ');
   const semester = parseInt(rawSemester);
   const yearFrom = parseInt(rawYearFrom);
-  let weekFrom: number = NaN;
+  let weekFrom = NaN;
 
   const subjects = raw
     .split('\n')
@@ -46,8 +46,8 @@ function parse(raw: string): Timetable | null {
     year: semester === 1 ? yearFrom : yearFrom + 1,
     month: 1,
     day: 4,
-  })
-  firstDate = firstDate.subtract({ days: firstDate.dayOfWeek - 1 }).add({ weeks: weekFrom - 1 })
+  });
+  firstDate = firstDate.subtract({ days: firstDate.dayOfWeek - 1 }).add({ weeks: weekFrom - 1 });
 
   return {
     firstDate,

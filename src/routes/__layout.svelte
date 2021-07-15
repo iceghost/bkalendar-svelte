@@ -1,4 +1,7 @@
-<script>import "../app.postcss";</script>
+<script>
+  import '../app.postcss';
+</script>
+
 <div class="flex flex-col min-h-screen w-full font-ibm">
-  <slot></slot>
+  <slot />
 </div>
