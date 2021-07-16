@@ -5,7 +5,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import { timetable } from '$lib/stores/timetable';
-  import { weekSelected } from '$lib/stores/date';
+  import { weekSelected, now } from '$lib/stores/date';
   import { Temporal } from '@js-temporal/polyfill';
 
   import Location16 from 'carbon-icons-svelte/lib/Location16';
@@ -31,7 +31,7 @@
   </h1>
 </div>
 {#each ['M', 'T', 'W', 'T', 'F', 'S', 'S'] as weekday, i}
-  <div class="flex p-8 space-x-8" class:bg-gray-100={$weekSelected.dayOfWeek === i + 1}>
+  <div class="flex p-8 space-x-8" class:bg-gray-100={$now.dayOfWeek === i + 1}>
     <div class="text-center w-12 flex-shrink-0">
       <h2 class="text-4xl font-bold">{weekday}</h2>
       <p class="text-gray-400">

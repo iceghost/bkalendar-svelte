@@ -4,11 +4,11 @@ const config = {
   theme: {
     extend: {
       fontFamily: {
-        ibm: ['IBM Plex Sans', 'sans-serif'],
+        ibm: ['Mulish', 'sans-serif'],
       },
     },
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/aspect-ratio')],
 };
 
 module.exports = config;

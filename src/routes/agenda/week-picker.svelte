@@ -4,7 +4,9 @@
 
 <script lang="ts">
   import { goto } from '$app/navigation';
+  import ChevronLeft24 from 'carbon-icons-svelte/lib/ChevronLeft24';
   import ChevronLeft32 from 'carbon-icons-svelte/lib/ChevronLeft32';
+  import ChevronRight24 from 'carbon-icons-svelte/lib/ChevronRight24';
   import { Temporal } from '@js-temporal/polyfill';
   import { weekSelected } from '$lib/stores/date';
   let firstDay = Temporal.PlainDate.from({
@@ -31,26 +33,30 @@
       <ChevronLeft32 />
     </button>
   </div>
-  <h1 class="text-4xl font-semibold">
-    <span class="text-gray-300 font-thin">Tuần</span>
-    này
-  </h1>
+  <h1 class="text-4xl font-semibold">Lịch tuần</h1>
 </div>
 
-<span>Tháng {firstDay.month} năm {firstDay.year}</span>
-<button on:click={() => (firstDay = firstDay.add({ days: firstDay.daysInMonth }))}>Thêm</button>
-<button on:click={() => (firstDay = firstDay.subtract({ days: 1 }))}>Giảm</button>
-<div class="grid grid-cols-8 px-4">
-  <span>Tuần</span>
-  <span>Mo</span>
-  <span>Tu</span>
-  <span>We</span>
-  <span>Th</span>
-  <span>Fr</span>
-  <span>Sa</span>
-  <span>Su</span>
+<div class="flex justify-between items-center">
+  <button class="p-2" on:click={() => (firstDay = firstDay.subtract({ days: 1 }))}>
+    <ChevronLeft24 />
+  </button>
+  <span class="font-bold">Tháng {firstDay.month}</span>
+  <button class="p-2" on:click={() => (firstDay = firstDay.add({ days: firstDay.daysInMonth }))}>
+    <ChevronRight24 />
+  </button>
 </div>
-<div class="grid grid-cols-8 px-4 gap-2">
+
+<div class="mt-4 grid grid-cols-[5ch,repeat(7,minmax(0,1fr))] gap-2 mr-2">
+  <div class="contents text-gray-300 font-bold text-sm text-center align-bottom">
+    <span>Tuần</span>
+    <span>T2</span>
+    <span>T3</span>
+    <span>T4</span>
+    <span>T5</span>
+    <span>T6</span>
+    <span>T7</span>
+    <span>CN</span>
+  </div>
   {#each [...Array(firstWeek.until(lastWeek, {
         largestUnit: 'week',
       }).weeks + 1).keys()].map((offset) => firstWeek.add({ weeks: offset })) as date}
@@ -60,11 +66,22 @@
         $weekSelected = date;
       }}
     >
-      <span class:bg-gray-500={Temporal.PlainDate.compare($weekSelected, date) === 0}>
+      <span
+        class="bg-gray-100 flex items-center justify-center rounded-r-md"
+        class:bg-blue-300={Temporal.PlainDate.compare($weekSelected, date) === 0}
+        class:text-blue-900={Temporal.PlainDate.compare($weekSelected, date) === 0}
+      >
         {date.weekOfYear}
       </span>
       {#each [0, 1, 2, 3, 4, 5, 6].map((offset) => date.add({ days: offset })) as weekday}
-        <span class:text-gray-300={weekday.month !== firstDay.month}>{weekday.day}</span>
+        <div
+          class="bg-gray-50 rounded-md aspect-w-1 aspect-h-1"
+          class:text-gray-300={weekday.month !== firstDay.month}
+          class:bg-blue-100={Temporal.PlainDate.compare($weekSelected, date) === 0}
+          class:text-blue-500={Temporal.PlainDate.compare($weekSelected, date) === 0}
+        >
+          <span class="flex items-center justify-center">{weekday.day}</span>
+        </div>
       {/each}
     </div>
   {/each}
