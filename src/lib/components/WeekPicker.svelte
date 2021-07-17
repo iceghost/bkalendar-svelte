@@ -24,10 +24,10 @@
 </script>
 
 <div
-  class="bg-white w-full max-w-sm rounded-lg mx-2 px-3 py-4"
+  class="absolute top-28 inset-x-0 mx-auto bg-white w-full max-w-sm rounded-lg px-3 py-4"
   on:click|stopPropagation
 >
-  <div class="flex justify-between items-center">
+  <div class="flex justify-between items-center pb-4">
     <button class="p-2" on:click={() => (firstDay = firstDay.subtract({ days: 1 }))}>
       <ChevronLeft24 />
     </button>

@@ -36,7 +36,7 @@
   </div>
   {#if openPicker}
     <div
-      class="absolute inset-0 h-screen bg-gray-500/50 flex items-center justify-center"
+      class="absolute inset-0 h-screen bg-gray-500/50"
       on:click={() => (openPicker = !openPicker)}
       transition:fade
     >
