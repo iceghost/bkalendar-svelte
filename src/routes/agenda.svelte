@@ -3,61 +3,58 @@
 </script>
 
 <script lang="ts">
-  import { goto } from '$app/navigation';
+  import Title from '$lib/components/Title.svelte';
+  import ClassOfDay from '$lib/components/ClassOfDay.svelte';
+  import WeekPicker from '$lib/components/WeekPicker.svelte';
+
   import { timetable } from '$lib/stores/timetable';
   import { weekSelected, now } from '$lib/stores/date';
-  import { Temporal } from '@js-temporal/polyfill';
+  import { fade } from 'svelte/transition';
 
-  import Location16 from 'carbon-icons-svelte/lib/Location16';
-  import Time16 from 'carbon-icons-svelte/lib/Time16';
   import Menu32 from 'carbon-icons-svelte/lib/Menu32';
   import Calendar32 from 'carbon-icons-svelte/lib/Calendar32';
 
-  let thisWeekAgenda = $timetable.subjects.filter(
+  $: thisWeekAgenda = $timetable.subjects.filter(
     (subject) => subject.weeks.indexOf($weekSelected.weekOfYear) >= 0,
   );
+
+  let openPicker = false;
 </script>
 
-<div class="sticky top-0 bg-white p-8 space-y-8">
-  <div class="flex w-full justify-between">
-    <Menu32 />
-    <button on:click={() => goto('/agenda/week-picker')}>
-      <Calendar32 />
-    </button>
-  </div>
-  <h1 class="text-4xl font-semibold">
-    <span class="text-gray-300 font-thin">Tuần</span>
-    này
-  </h1>
-</div>
-{#each ['M', 'T', 'W', 'T', 'F', 'S', 'S'] as weekday, i}
-  <div class="flex p-8 space-x-8" class:bg-gray-100={$now.dayOfWeek === i + 1}>
-    <div class="text-center w-12 flex-shrink-0">
-      <h2 class="text-4xl font-bold">{weekday}</h2>
-      <p class="text-gray-400">
-        <span class="text-gray-800">
-          {$weekSelected.add({ days: i }).day}
-        </span>
-        .
-        {$weekSelected.add({ days: i }).month}
-      </p>
+<div class="sticky top-0">
+  <div class="bg-white p-4 space-y-4">
+    <div class="flex w-full justify-between">
+      <Menu32 />
+      <button on:click={() => (openPicker = !openPicker)}>
+        <Calendar32 />
+      </button>
     </div>
+    <h1 class="text-4xl font-semibold">
+      <span class="text-gray-300 font-thin">Tuần</span>
+      này
+    </h1>
+  </div>
+  {#if openPicker}
+    <div
+      class="absolute inset-0 h-screen bg-gray-500/50 flex items-center justify-center"
+      on:click={() => (openPicker = !openPicker)}
+      transition:fade
+    >
+      <WeekPicker />
+    </div>
+  {/if}
+</div>
+
+<!-- View weekdays -->
+{#each ['M', 'T', 'W', 'T', 'F', 'S', 'S'] as weekday, i}
+  <div class="flex p-4 space-x-4" class:bg-gray-100={$now.dayOfWeek === i + 1}>
+    <Title date={$weekSelected.add({ days: i })} {weekday} />
     <div class="space-y-8">
       {#if !thisWeekAgenda.some((subject) => subject.weekday === i + 2)}
         <p class="text-gray-400 font-thin">Hôm nay không có môn nào hết</p>
       {:else}
-        {#each thisWeekAgenda.filter((subject) => subject.weekday === i + 2) as { name, start, end, room }}
-          <div class="space-y-3">
-            <p>{name}</p>
-            <div class="flex items-center space-x-1 text-gray-600">
-              <Time16 />
-              <p class="text-xs">{start + 5}:00–{end + 5}:50</p>
-            </div>
-            <div class="flex items-center space-x-1 text-gray-600">
-              <Location16 />
-              <p class="text-xs">{room}</p>
-            </div>
-          </div>
+        {#each thisWeekAgenda.filter((subject) => subject.weekday === i + 2) as subject}
+          <ClassOfDay {subject} />
         {/each}
       {/if}
     </div>
