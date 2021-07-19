@@ -74,7 +74,7 @@
 
 <style lang="postcss">
   .btn {
-    @apply mt-2 px-2 py-1 flex items-center;
+    @apply mt-2 px-2 py-1 flex items-center rounded-md;
   }
 
   .btn-primary {

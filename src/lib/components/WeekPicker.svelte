@@ -59,8 +59,8 @@
       >
         <span
           class="bg-gray-100 flex items-center justify-center rounded-r-md"
-          class:bg-blue-300={Temporal.PlainDate.compare($weekSelected, date) === 0}
-          class:text-blue-900={Temporal.PlainDate.compare($weekSelected, date) === 0}
+          class:bg-blue-700={Temporal.PlainDate.compare($weekSelected, date) === 0}
+          class:text-white={Temporal.PlainDate.compare($weekSelected, date) === 0}
         >
           {date.weekOfYear}
         </span>
@@ -68,8 +68,8 @@
           <div
             class="bg-gray-50 rounded-md aspect-w-1 aspect-h-1"
             class:text-gray-300={weekday.month !== firstDay.month}
-            class:bg-blue-100={Temporal.PlainDate.compare($weekSelected, date) === 0}
-            class:text-blue-500={Temporal.PlainDate.compare($weekSelected, date) === 0}
+            class:bg-blue-50={Temporal.PlainDate.compare($weekSelected, date) === 0}
+            class:text-blue-700={Temporal.PlainDate.compare($weekSelected, date) === 0}
           >
             <span class="flex items-center justify-center">{weekday.day}</span>
           </div>
