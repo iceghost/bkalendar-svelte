@@ -1,5 +1,19 @@
-<script context="module">
+<script context="module" lang="ts">
+  import { get } from 'svelte/store';
+  import { timetable } from '$lib/stores/timetable';
+
   export const ssr = false;
+
+  export const load: import('@sveltejs/kit').Load = ({ page, fetch, session, context }) => {
+    if (get(timetable) === undefined)
+      return {
+        status: 300,
+        redirect: '/agenda/input',
+      };
+    return {
+      status: 200,
+    };
+  };
 </script>
 
 <script lang="ts">
@@ -7,12 +21,11 @@
   import ClassOfDay from '$lib/components/ClassOfDay.svelte';
   import WeekPicker from '$lib/components/WeekPicker.svelte';
 
-  import { timetable } from '$lib/stores/timetable';
   import { weekSelected, now } from '$lib/stores/date';
   import { fade } from 'svelte/transition';
 
   import Menu32 from 'carbon-icons-svelte/lib/Menu32';
-  import Calendar32 from 'carbon-icons-svelte/lib/Calendar32';
+  import CalendarHeatmap32 from 'carbon-icons-svelte/lib/CalendarHeatMap32';
 
   $: thisWeekAgenda = $timetable.subjects.filter(
     (subject) => subject.weeks.indexOf($weekSelected.weekOfYear) >= 0,
@@ -26,7 +39,7 @@
     <div class="flex w-full justify-between">
       <Menu32 />
       <button on:click={() => (openPicker = !openPicker)}>
-        <Calendar32 />
+        <CalendarHeatmap32 />
       </button>
     </div>
     <h1 class="text-4xl font-semibold">
