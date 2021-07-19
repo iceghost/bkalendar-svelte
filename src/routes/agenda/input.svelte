@@ -44,7 +44,7 @@
       class="btn btn-secondary transition-colors delay-100 duration-500"
       class:btn-disabled={!$timetable}
       on:click={() => goto('/agenda')}
-      disabled={!status}
+      disabled={!$timetable}
     >
       <ArrowLeft32 class="mr-2" />
       Trang chính
