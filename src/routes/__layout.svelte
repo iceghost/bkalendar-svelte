@@ -2,6 +2,6 @@
   import '../app.postcss';
 </script>
 
-<div class="flex flex-col min-h-screen w-full font-ibm">
+<div class="flex flex-col w-full font-ibm">
   <slot />
 </div>

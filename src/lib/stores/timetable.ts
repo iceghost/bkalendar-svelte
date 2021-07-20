@@ -3,13 +3,15 @@ import { Temporal } from '@js-temporal/polyfill';
 
 function parse(raw: string): Timetable | null {
   // first line: Học kỳ 2 Năm học 2020 - 2021
-  const [, , rawSemester, , , rawYearFrom] = raw.split('\n')[0].split(' ');
+  const lines = raw.split('\n');
+  const pos = lines.findIndex((line) => /^Học kỳ \d Năm học \d+ - \d+/g.test(line));
+  const [, , rawSemester, , , rawYearFrom] = lines[pos].split(' ');
   const semester = parseInt(rawSemester);
   const yearFrom = parseInt(rawYearFrom);
   let weekFrom = NaN;
 
-  const subjects = raw
-    .split('\n')
+  const subjects = lines
+    .slice(pos)
     .map((line) => {
       const [id, name, , , group, rawWeekday, rawPeriods, , room, , rawWeeks] = line.split('\t');
 

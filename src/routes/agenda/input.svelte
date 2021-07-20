@@ -8,6 +8,7 @@
   import Menu32 from 'carbon-icons-svelte/lib/Menu32';
   import ArrowLeft32 from 'carbon-icons-svelte/lib/ArrowLeft20';
   import DataTableReference20 from 'carbon-icons-svelte/lib/DataTableReference20';
+
   import { goto } from '$app/navigation';
   import { fly } from 'svelte/transition';
 
@@ -16,6 +17,10 @@
 
   $: status = raw !== raw || undefined;
 </script>
+
+<svelte:head>
+  <title>Nhập dữ liệu | BKalendar</title>
+</svelte:head>
 
 <div class="sticky top-0">
   <div class="bg-white p-4 space-y-4">
