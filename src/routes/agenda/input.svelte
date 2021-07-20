@@ -5,9 +5,9 @@
 <script lang="ts">
   import { timetable } from '$lib/stores/timetable';
 
-  import Menu32 from 'carbon-icons-svelte/lib/Menu32';
-  import ArrowLeft32 from 'carbon-icons-svelte/lib/ArrowLeft20';
-  import DataTableReference20 from 'carbon-icons-svelte/lib/DataTableReference20';
+  import Home from 'carbon-icons-svelte/lib/Home32';
+  import ArrowLeft from 'carbon-icons-svelte/lib/ArrowLeft20';
+  import DataTableReference from 'carbon-icons-svelte/lib/DataTableReference20';
 
   import { goto } from '$app/navigation';
   import { fly } from 'svelte/transition';
@@ -25,7 +25,9 @@
 <div class="sticky top-0">
   <div class="bg-white p-4 space-y-4">
     <div class="flex w-full justify-between">
-      <Menu32 />
+      <button on:click={() => goto('/agenda')}>
+        <Home />
+      </button>
     </div>
     <h1 class="text-4xl font-semibold leading-none">Nhập dữ liệu</h1>
     <p>Copy thời khóa biểu từ stinfo rồi paste qua đây nhé!</p>
@@ -46,16 +48,23 @@
   </label>
   <div class="flex justify-end w-full space-x-2">
     <button
-      class="btn btn-secondary transition-colors delay-100 duration-500"
+      class="btn transition-colors delay-500 duration-500"
       class:btn-disabled={!$timetable}
+      class:btn-secondary={$timetable && !status}
+      class:btn-primary={$timetable && status}
       on:click={() => goto('/agenda')}
       disabled={!$timetable}
     >
-      <ArrowLeft32 class="mr-2" />
+      <ArrowLeft class="mr-2" />
       Trang chính
     </button>
-    <button class="btn btn-primary" on:click={() => (status = timetable.feed(raw))}>
-      <DataTableReference20 class="mr-2" />
+    <button
+      class="btn transition-colors delay-500 duration-500"
+      on:click={() => (status = timetable.feed(raw))}
+      class:btn-primary={!status}
+      class:btn-secondary={$timetable && status}
+    >
+      <DataTableReference class="mr-2" />
       Đọc
     </button>
   </div>

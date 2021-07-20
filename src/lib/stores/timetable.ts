@@ -5,6 +5,7 @@ function parse(raw: string): Timetable | null {
   // first line: Học kỳ 2 Năm học 2020 - 2021
   const lines = raw.split('\n');
   const pos = lines.findIndex((line) => /^Học kỳ \d Năm học \d+ - \d+/g.test(line));
+  if (pos === -1) return null;
   const [, , rawSemester, , , rawYearFrom] = lines[pos].split(' ');
   const semester = parseInt(rawSemester);
   const yearFrom = parseInt(rawYearFrom);
