@@ -16,3 +16,12 @@ declare interface Timetable {
   firstDate: import('@js-temporal/polyfill').Temporal.PlainDate;
   subjects: Subject[];
 }
+
+interface AgendaEvent {
+  name: string;
+  room: string;
+  date: import('@js-temporal/polyfill').Temporal.PlainDate;
+  start: import('@js-temporal/polyfill').Temporal.PlainTime;
+  end: import('@js-temporal/polyfill').Temporal.PlainTime;
+  upcoming?: boolean;
+}

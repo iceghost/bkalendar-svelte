@@ -18,19 +18,16 @@
 
 <script lang="ts">
   import Title from '$lib/components/Title.svelte';
-  import ClassOfDay from '$lib/components/ClassOfDay.svelte';
+  import ClassOfDay from '$lib/components/AgendaEvent.svelte';
   import WeekPicker from '$lib/components/WeekPicker.svelte';
 
   import { weekSelected, now } from '$lib/stores/date';
+  import { agenda } from '$lib/stores/agenda';
   import { fade } from 'svelte/transition';
 
   import Edit from 'carbon-icons-svelte/lib/Edit32';
   import CalendarHeatmap from 'carbon-icons-svelte/lib/CalendarHeatMap32';
   import { goto } from '$app/navigation';
-
-  $: thisWeekAgenda = $timetable.subjects.filter(
-    (subject) => subject.weeks.indexOf($weekSelected.weekOfYear) >= 0,
-  );
 
   let openPicker = false;
 </script>
@@ -64,14 +61,14 @@
 
 <!-- View weekdays -->
 {#each ['M', 'T', 'W', 'T', 'F', 'S', 'S'] as weekday, i}
-  <div class="flex p-4 space-x-4" class:bg-gray-100={$now.dayOfWeek === i + 1}>
+  <div class="flex p-4 space-x-4">
     <Title date={$weekSelected.add({ days: i })} {weekday} />
     <div class="space-y-8">
-      {#if !thisWeekAgenda.some((subject) => subject.weekday === i + 2)}
+      {#if !$agenda.some((event) => event.date.dayOfWeek === i + 1)}
         <p class="text-gray-400 font-thin">Hôm nay không có môn nào hết</p>
       {:else}
-        {#each thisWeekAgenda.filter((subject) => subject.weekday === i + 2) as subject}
-          <ClassOfDay {subject} />
+        {#each $agenda.filter((event) => event.date.dayOfWeek === i + 1) as event}
+          <ClassOfDay {event} />
         {/each}
       {/if}
     </div>
