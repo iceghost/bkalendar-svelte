@@ -24,12 +24,17 @@
   import { weekSelected, now } from '$lib/stores/date';
   import { agenda } from '$lib/stores/agenda';
   import { fade } from 'svelte/transition';
+  import { goto } from '$app/navigation';
 
   import Edit from 'carbon-icons-svelte/lib/Edit32';
   import CalendarHeatmap from 'carbon-icons-svelte/lib/CalendarHeatMap32';
-  import { goto } from '$app/navigation';
+  import Sun from 'carbon-icons-svelte/lib/Sun16';
+  import Moon from 'carbon-icons-svelte/lib/Moon16';
 
   let openPicker = false;
+
+  const isThisWeek =
+    $now.year === $weekSelected.year && $now.weekOfYear === $weekSelected.weekOfYear;
 </script>
 
 <svelte:head>
@@ -48,6 +53,8 @@
     </div>
     <h1 class="text-4xl font-semibold">Tuần này</h1>
   </div>
+
+  <!-- Week picker -->
   {#if openPicker}
     <div
       class="absolute inset-0 h-screen bg-gray-500/50"
@@ -61,16 +68,27 @@
 
 <!-- View weekdays -->
 {#each ['M', 'T', 'W', 'T', 'F', 'S', 'S'] as weekday, i}
-  <div class="flex p-4 space-x-4">
+  <div class="flex p-4 space-x-6" class:bg-gray-50={isThisWeek && $now.dayOfWeek === i + 1}>
     <Title date={$weekSelected.add({ days: i })} {weekday} />
-    <div class="space-y-8">
-      {#if !$agenda.some((event) => event.date.dayOfWeek === i + 1)}
-        <p class="text-gray-400 font-thin">Hôm nay không có môn nào hết</p>
-      {:else}
+    {#if !$agenda.some((event) => event.date.dayOfWeek === i + 1)}
+      <p class="text-gray-400 font-thin">Hôm nay không có môn nào hết</p>
+    {:else}
+      <div class="flex-1 space-y-1"
+      >
+        <Sun class="-ml-2 text-gray-400" />
+        <div
+          role="separator"
+          class="h-8 border-l-2 border-gray-200 border-dotted"
+        />
         {#each $agenda.filter((event) => event.date.dayOfWeek === i + 1) as event}
           <ClassOfDay {event} />
+          <div
+            role="separator"
+            class="h-8 border-l-2 border-gray-200 border-dotted"
+          />
         {/each}
-      {/if}
-    </div>
+        <Moon class="-ml-2 text-gray-400" />
+      </div>
+    {/if}
   </div>
 {/each}

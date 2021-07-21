@@ -1,24 +1,27 @@
 <script lang="ts">
   import Location from 'carbon-icons-svelte/lib/Location16';
-  import Time from 'carbon-icons-svelte/lib/Time16';
+  import LocationFilled from 'carbon-icons-svelte/lib/LocationFilled16';
 
   export let event: AgendaEvent;
+
+  const startTime = event.start.toString({ smallestUnit: 'minute' });
+  const endTime = event.end.toString({ smallestUnit: 'minute' });
 </script>
 
-<div class="space-y-3">
-  <p class:text-blue-700={event.upcoming}>
-    {event.name}
-  </p>
-  <div class="flex items-center space-x-1 text-gray-600">
-    <Time />
-    <p class="text-xs tabular-nums">
-      {event.start.toString({ smallestUnit: 'minute' })}–{event.end.toString({
-        smallestUnit: 'minute',
-      })}
+<div class="content" class:font-bold={event.upcoming}>
+  <span class="-ml-4 text-xs">{startTime}</span>
+  <div class="border-l-2 space-y-2" class:border-gray-700={event.upcoming}>
+    <p class="ml-2">
+      {event.name}
     </p>
+    <div class="ml-2 flex items-center justify-end space-x-1">
+      <p class="text-xs">{event.room}</p>
+      {#if event.upcoming}
+        <LocationFilled />
+      {:else}
+        <Location />
+      {/if}
+    </div>
   </div>
-  <div class="flex items-center space-x-1 text-gray-600">
-    <Location />
-    <p class="text-xs">{event.room}</p>
-  </div>
+  <span class="-ml-4 text-xs">{endTime}</span>
 </div>

@@ -3,7 +3,7 @@ import { timetable } from './timetable';
 import { Temporal } from '@js-temporal/polyfill';
 
 export const now = readable<Temporal.PlainDateTime>(Temporal.now.plainDateTimeISO(), (set) => {
-  const interval = setInterval(() => set(Temporal.now.plainDateTimeISO()), 60000);
+  const interval = setInterval(() => set(Temporal.now.plainDateTimeISO()), 1000);
 
   return clearInterval(interval);
 });
