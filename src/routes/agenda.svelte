@@ -82,7 +82,10 @@
           <div role="separator" class="h-8 border-l-2 border-gray-200 border-dotted" />
         {/each}
         {#if !weekdayEvents.some((event) => event.upcoming) && $now.dayOfWeek === i + 1}
-          <AsleepFilled class="-ml-2 text-gray-800" />
+          <div class="flex items-center space-x-1">
+            <AsleepFilled class="-ml-2 text-gray-800" />
+            <span class="text-xs text-gray-400">\ngủ ngon nhé uwu/</span>
+          </div>
         {:else}
           <Asleep class="-ml-2 text-gray-400" />
         {/if}
