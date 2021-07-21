@@ -29,7 +29,8 @@
   import Edit from 'carbon-icons-svelte/lib/Edit32';
   import CalendarHeatmap from 'carbon-icons-svelte/lib/CalendarHeatMap32';
   import Sun from 'carbon-icons-svelte/lib/Sun16';
-  import Moon from 'carbon-icons-svelte/lib/Moon16';
+  import Asleep from 'carbon-icons-svelte/lib/Asleep16';
+  import AsleepFilled from 'carbon-icons-svelte/lib/AsleepFilled16';
 
   let openPicker = false;
 
@@ -67,27 +68,24 @@
 </div>
 
 <!-- View weekdays -->
-{#each ['M', 'T', 'W', 'T', 'F', 'S', 'S'] as weekday, i}
+{#each $agenda as weekdayEvents, i}
   <div class="flex p-4 space-x-6" class:bg-gray-50={isThisWeek && $now.dayOfWeek === i + 1}>
-    <Title date={$weekSelected.add({ days: i })} {weekday} />
-    {#if !$agenda.some((event) => event.date.dayOfWeek === i + 1)}
+    <Title date={$weekSelected.add({ days: i })} weekday={i} />
+    {#if weekdayEvents.length === 0}
       <p class="text-gray-400 font-thin">Hôm nay không có môn nào hết</p>
     {:else}
-      <div class="flex-1 space-y-1"
-      >
+      <div class="flex-1 space-y-1">
         <Sun class="-ml-2 text-gray-400" />
-        <div
-          role="separator"
-          class="h-8 border-l-2 border-gray-200 border-dotted"
-        />
-        {#each $agenda.filter((event) => event.date.dayOfWeek === i + 1) as event}
+        <div role="separator" class="h-8 border-l-2 border-gray-200 border-dotted" />
+        {#each weekdayEvents as event}
           <ClassOfDay {event} />
-          <div
-            role="separator"
-            class="h-8 border-l-2 border-gray-200 border-dotted"
-          />
+          <div role="separator" class="h-8 border-l-2 border-gray-200 border-dotted" />
         {/each}
-        <Moon class="-ml-2 text-gray-400" />
+        {#if !weekdayEvents.some((event) => event.upcoming) && $now.dayOfWeek === i + 1}
+          <AsleepFilled class="-ml-2 text-gray-800" />
+        {:else}
+          <Asleep class="-ml-2 text-gray-400" />
+        {/if}
       </div>
     {/if}
   </div>
