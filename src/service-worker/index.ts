@@ -7,6 +7,7 @@ const cacheName = `cache${timestamp}`;
 
 worker.addEventListener('install', (e) => {
   console.log('[Service Worker] Install');
+  worker.skipWaiting();
   e.waitUntil(
     (async () => {
       const cache = await caches.open(cacheName);
