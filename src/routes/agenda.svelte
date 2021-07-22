@@ -34,8 +34,7 @@
 
   let openPicker = false;
 
-  const isThisWeek =
-    $now.year === $weekSelected.year && $now.weekOfYear === $weekSelected.weekOfYear;
+  $: isThisWeek = $now.year === $weekSelected.year && $now.weekOfYear === $weekSelected.weekOfYear;
 </script>
 
 <svelte:head>
