@@ -1,5 +1,4 @@
-import { writable, readable, derived, get } from 'svelte/store';
-import { timetable } from './timetable';
+import { writable, readable, get } from 'svelte/store';
 import { Temporal } from '@js-temporal/polyfill';
 
 export const now = readable<Temporal.PlainDateTime>(Temporal.now.plainDateTimeISO(), (set) => {
