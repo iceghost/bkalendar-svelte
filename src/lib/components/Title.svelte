@@ -3,7 +3,7 @@
   export let date: Temporal.PlainDate;
   export let weekday: number;
 
-  const toString = ["M", "T", "W", "T", "F", "S", "S"];
+  const toString = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 </script>
 
 <div class="text-center w-12 flex-shrink-0">

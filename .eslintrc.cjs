@@ -6,7 +6,7 @@ module.exports = {
   ignorePatterns: ['*.cjs'],
   overrides: [
     { files: ['*.svelte'], processor: 'svelte3/svelte3' },
-    { files: ['*.ts'], rules: { 'no-undef': 'off' } },
+    { files: ['*.ts', '*.svelte'], rules: { 'no-undef': 'off' } },
   ],
   settings: {
     'svelte3/typescript': () => require('typescript'),
