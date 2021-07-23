@@ -1,9 +1,19 @@
 /// <reference lib="webworker" />
 
+import { upcomingEvent } from '../lib/stores/notifications';
 import { build, files, timestamp } from '$service-worker';
+import { Temporal } from '@js-temporal/polyfill';
 
 const worker = (self as unknown) as ServiceWorkerGlobalScope;
 const cacheName = `cache${timestamp}`;
+
+worker.addEventListener('message', (msg) => {
+  worker.registration.showNotification(msg.data.title, {
+    body: msg.data.body,
+    timestamp: msg.data.timestamp,
+    tag: msg.data.tag,
+  });
+});
 
 worker.addEventListener('install', (e) => {
   console.log('[Service Worker] Install');
