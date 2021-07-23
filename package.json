@@ -37,6 +37,7 @@
     "@sveltejs/adapter-static": "^1.0.0-next.13",
     "@tailwindcss/aspect-ratio": "^0.2.1",
     "@tailwindcss/forms": "^0.3.3",
-    "firebase": "9.0.0-beta.6"
+    "firebase": "9.0.0-beta.6",
+    "localforage": "^1.9.0"
   }
 }

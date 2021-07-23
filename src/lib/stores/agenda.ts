@@ -6,7 +6,8 @@ import { timetable } from './timetable';
 export const agenda: Readable<AgendaEvent[][]> = derived(
   [timetable, now, weekSelected],
   ([$timetable, $now, $weekSelected]) => {
-    if ($timetable === undefined) return [];
+    if (!$timetable) return [];
+
     const monday = $weekSelected;
     const subjects = $timetable.subjects.filter(
       (subject) => subject.weeks.indexOf($weekSelected.weekOfYear) >= 0,

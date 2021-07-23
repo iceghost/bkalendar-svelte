@@ -1,19 +1,5 @@
 <script context="module" lang="ts">
-  import { get } from 'svelte/store';
-  import { timetable } from '$lib/stores/timetable';
-
   export const ssr = false;
-
-  export const load: import('@sveltejs/kit').Load = ({ page, fetch, session, context }) => {
-    if (get(timetable) === undefined)
-      return {
-        status: 300,
-        redirect: '/input',
-      };
-    return {
-      status: 200,
-    };
-  };
 </script>
 
 <script lang="ts">
@@ -24,7 +10,9 @@
   import { weekSelected, now } from '$lib/stores/date';
   import { agenda } from '$lib/stores/agenda';
   import { hasNotifications } from '$lib/stores/notifications';
+  import { timetable } from '$lib/stores/timetable';
   import { fade, fly, scale } from 'svelte/transition';
+  import { goto } from '$app/navigation';
 
   import Menu from 'carbon-icons-svelte/lib/Menu32';
   import Edit from 'carbon-icons-svelte/lib/Edit32';
@@ -51,7 +39,7 @@
   <div class="bg-white p-4 space-y-4">
     <div class="flex w-full justify-between">
       {#if !openMenu}
-        <button on:click={() => (openMenu = !openMenu)} in:scale={{ delay: 200 }} out:scale>
+        <button on:click={() => (openMenu = !openMenu)} in:scale={{ delay: 200 }} out:scale|local>
           <Menu />
         </button>
       {:else}
@@ -112,6 +100,16 @@
     </div>
   {/if}
 </div>
+
+{#if $timetable === undefined}
+  Loading...
+{:else if $timetable === null}
+  {#await goto('/input')}
+    Chuyển trang...
+  {:then _}
+    Chuyển trang thành công
+  {/await}
+{/if}
 
 <!-- View weekdays -->
 {#each $agenda as weekdayEvents, i}

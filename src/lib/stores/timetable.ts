@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
 import { Temporal } from '@js-temporal/polyfill';
+import localforage from 'localforage';
 
 function parse(raw: string): Timetable | null {
   // first line: Học kỳ 2 Năm học 2020 - 2021
@@ -59,24 +60,26 @@ function parse(raw: string): Timetable | null {
 }
 
 function createTimetable() {
-  const { subscribe, set } = writable<Timetable>(undefined, (set) => {
-    const serialized = localStorage.getItem('timetable-data');
-    if (serialized)
-      set(
-        JSON.parse(serialized, (key, value) => {
-          if (key === 'firstDate') {
-            return Temporal.PlainDate.from(value);
-          }
-          return value;
-        }),
-      );
+  const { subscribe, set } = writable<Timetable | null>(undefined, (set) => {
+    localforage.getItem<string>('timetable-data').then((serialized) => {
+      if (serialized)
+        set(
+          JSON.parse(serialized, (key, value) => {
+            if (key === 'firstDate') {
+              return Temporal.PlainDate.from(value);
+            }
+            return value;
+          }),
+        );
+      else set(null);
+    });
   });
 
-  function feed(raw: string, set: (value: Timetable) => void): boolean {
+  function feed(raw: string, set: (value: Timetable | null) => void): boolean {
     const result = parse(raw);
     if (result) {
       set(result);
-      localStorage.setItem('timetable-data', JSON.stringify(result));
+      localforage.setItem('timetable-data', JSON.stringify(result));
       return true;
     }
     return false;

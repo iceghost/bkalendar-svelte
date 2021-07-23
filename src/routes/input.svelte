@@ -1,4 +1,4 @@
-<script context="module">
+<script context="module" lang="ts">
   export const ssr = false;
 </script>
 
@@ -25,7 +25,12 @@
 <div class="sticky top-0">
   <div class="bg-white p-4 space-y-4">
     <div class="flex w-full justify-between">
-      <button on:click={() => goto('/agenda')}>
+      <button
+        class="transition-colors delay-500 duration-500"
+        on:click={() => goto('/agenda')}
+        disabled={!$timetable}
+        class:text-gray-300={!$timetable}
+      >
         <Home />
       </button>
     </div>
