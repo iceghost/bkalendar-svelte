@@ -3,20 +3,16 @@
 </script>
 
 <script lang="ts">
-  import AppBarInput from '../lib/components/AppBarInput.svelte';
+  import AppBarInput from '$lib/components/AppBarInput.svelte';
+  import Textarea from '$lib/components/Input/Textarea.svelte';
+  import Buttons from '$lib/components/Input/Buttons.svelte';
 
   import { timetable } from '$lib/stores/timetable';
 
-  import ArrowLeft from 'carbon-icons-svelte/lib/ArrowLeft20';
-  import DataTableReference from 'carbon-icons-svelte/lib/DataTableReference20';
-
-  import { goto } from '$app/navigation';
   import { fly } from 'svelte/transition';
 
   let raw = '';
   let status: boolean | undefined;
-
-  $: status = raw !== raw || undefined;
 </script>
 
 <svelte:head>
@@ -27,38 +23,9 @@
 
 <form class="w-full max-w-xl px-4" on:submit|preventDefault>
   <p>Copy thời khóa biểu từ stinfo rồi paste qua đây nhé!</p>
-  <label>
-    <span class="text-sm text-gray-400">Nhập thời khóa biểu</span>
-    <textarea
-      class="w-full h-32 bg-gray-100 border-white border-b-gray-500"
-      class:bg-red-50={status === false}
-      class:border-b-red-500={status === false}
-      class:bg-blue-50={status === true}
-      class:border-b-blue-500={status === true}
-      bind:value={raw}
-    />
-  </label>
+  <Textarea bind:status bind:raw />
   <div class="flex justify-end w-full space-x-2">
-    <button
-      class="btn transition-colors delay-500 duration-500"
-      class:btn-disabled={!$timetable}
-      class:btn-secondary={$timetable && !status}
-      class:btn-primary={$timetable && status}
-      on:click={() => goto('/agenda')}
-      disabled={!$timetable}
-    >
-      <ArrowLeft class="mr-2" />
-      Trang chính
-    </button>
-    <button
-      class="btn transition-colors delay-500 duration-500"
-      on:click={() => (status = timetable.feed(raw))}
-      class:btn-primary={!status}
-      class:btn-secondary={$timetable && status}
-    >
-      <DataTableReference class="mr-2" />
-      Đọc
-    </button>
+    <Buttons bind:status {raw} />
   </div>
 
   <!-- Status -->
@@ -77,21 +44,3 @@
     </p>
   {/if}
 </form>
-
-<style lang="postcss" type="text/postcss">
-  .btn {
-    @apply mt-2 px-2 py-1 flex items-center rounded-md;
-  }
-
-  .btn-primary {
-    @apply bg-blue-700 text-white;
-  }
-
-  .btn-secondary {
-    @apply bg-blue-50 text-blue-700;
-  }
-
-  .btn-disabled {
-    @apply bg-gray-50 text-gray-300 cursor-not-allowed;
-  }
-</style>
