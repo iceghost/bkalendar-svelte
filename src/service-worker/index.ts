@@ -1,8 +1,6 @@
 /// <reference lib="webworker" />
 
-import { upcomingEvent } from '../lib/stores/notifications';
 import { build, files, timestamp } from '$service-worker';
-import { Temporal } from '@js-temporal/polyfill';
 
 const worker = (self as unknown) as ServiceWorkerGlobalScope;
 const cacheName = `cache${timestamp}`;

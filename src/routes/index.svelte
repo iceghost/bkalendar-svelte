@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
   export const ssr = false;
 
-  export const load: import('@sveltejs/kit').Load = ({ page, fetch, session, context }) => {
+  export const load: import('@sveltejs/kit').Load = () => {
     return {
       status: 300,
       redirect: '/agenda',

@@ -3,9 +3,10 @@
 </script>
 
 <script lang="ts">
+  import AppBarInput from '../lib/components/AppBarInput.svelte';
+
   import { timetable } from '$lib/stores/timetable';
 
-  import Home from 'carbon-icons-svelte/lib/Home32';
   import ArrowLeft from 'carbon-icons-svelte/lib/ArrowLeft20';
   import DataTableReference from 'carbon-icons-svelte/lib/DataTableReference20';
 
@@ -22,24 +23,10 @@
   <title>Nhập dữ liệu | BKalendar</title>
 </svelte:head>
 
-<div class="sticky top-0">
-  <div class="bg-white p-4 space-y-4">
-    <div class="flex w-full justify-between">
-      <button
-        class="transition-colors delay-500 duration-500"
-        on:click={() => goto('/agenda')}
-        disabled={!$timetable}
-        class:text-gray-300={!$timetable}
-      >
-        <Home />
-      </button>
-    </div>
-    <h1 class="text-4xl font-semibold leading-none">Nhập dữ liệu</h1>
-    <p>Copy thời khóa biểu từ stinfo rồi paste qua đây nhé!</p>
-  </div>
-</div>
+<AppBarInput />
 
 <form class="w-full max-w-xl px-4" on:submit|preventDefault>
+  <p>Copy thời khóa biểu từ stinfo rồi paste qua đây nhé!</p>
   <label>
     <span class="text-sm text-gray-400">Nhập thời khóa biểu</span>
     <textarea
@@ -91,7 +78,7 @@
   {/if}
 </form>
 
-<style lang="postcss">
+<style lang="postcss" type="text/postcss">
   .btn {
     @apply mt-2 px-2 py-1 flex items-center rounded-md;
   }
@@ -105,6 +92,6 @@
   }
 
   .btn-disabled {
-    @apply bg-gray-50 text-gray-300 hover:cursor-not-allowed;
+    @apply bg-gray-50 text-gray-300 cursor-not-allowed;
   }
 </style>

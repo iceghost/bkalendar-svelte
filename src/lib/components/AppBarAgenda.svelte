@@ -35,6 +35,7 @@
       </button>
     {/if}
   </div>
+
   <button slot="right-button" on:click={() => (openPicker = !openPicker)}>
     <CalendarHeatmap />
   </button>
@@ -44,9 +45,9 @@
     {#if openMenu}
       <div
         class="absolute top-14 inset-x-0 h-screen"
-        on:click={(e) => (openMenu = !openMenu)}
+        on:click={() => (openMenu = !openMenu)}
         in:fly={{ y: -10 }}
-        out:fly={{ y: -10, duration: 100 }}
+        out:fly|local={{ y: -10, duration: 100 }}
       >
         <Menu />
       </div>
@@ -57,7 +58,7 @@
       <div
         class="absolute inset-0 h-screen bg-gray-500/50"
         on:click={() => (openPicker = !openPicker)}
-        transition:fade
+        transition:fade|local
       >
         <WeekPicker />
       </div>
