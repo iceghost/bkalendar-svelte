@@ -11,7 +11,7 @@
     "format": "prettier --write --plugin-search-dir=. ."
   },
   "devDependencies": {
-    "@sveltejs/kit": "next",
+    "@sveltejs/kit": "^1.0.0-next.137",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.19.0",
     "autoprefixer": "^10.2.6",
@@ -37,7 +37,6 @@
     "@sveltejs/adapter-static": "^1.0.0-next.13",
     "@tailwindcss/aspect-ratio": "^0.2.1",
     "@tailwindcss/forms": "^0.3.3",
-    "firebase": "9.0.0-beta.6",
     "localforage": "^1.9.0"
   }
 }
